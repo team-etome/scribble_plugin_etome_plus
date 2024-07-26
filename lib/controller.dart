@@ -113,8 +113,8 @@ class CanvasController {
   /// Method to toggle overlay mode.
   static Future<void> onWindowFocusChanged(bool onWindowFocusChanged) async {
     try {
-      await platform
-          .invokeMethod('onWindowFocusChanged', {'onWindowFocusChanged': !onWindowFocusChanged});
+      await platform.invokeMethod('onWindowFocusChanged',
+          {'onWindowFocusChanged': !onWindowFocusChanged});
     } catch (e) {
       log("Error invoking onWindowFocusChanged method: $e");
     }
@@ -211,39 +211,50 @@ class CanvasController {
   }
 
   /// Method to load the bitmap from bytearray.
-  static Future<void> loadBitmapFromByteArray(Uint8List byteArray) async {
+  // static Future<void> loadBitmapFromByteArray(Uint8List byteArray) async {
+  //   try {
+  //     String base64String = base64Encode(byteArray);
+  //     await platform.invokeMethod('loadBitmapFromByteArray', {
+  //       'byteArray': base64String,
+  //     });
+  //   } catch (e) {
+  //     log("Error invoking loadBitmapFromByteArray method: $e");
+  //     rethrow;
+  //   }
+  // }
+
+  // Checks if the canvas is dirty.
+  static Future<bool> isDirty() async {
     try {
-      String base64String = base64Encode(byteArray);
-      await platform.invokeMethod('loadBitmapFromByteArray', {
-        'byteArray': base64String,
-      });
+      bool isDirty = await platform.invokeMethod('isDirty');
+      return isDirty;
     } catch (e) {
-      log("Error invoking loadBitmapFromByteArray method: $e");
+      log("Error invoking isDirty method: $e");
       rethrow;
     }
   }
 
   /// Checks if the canvas is currently being written on.
-  static Future<bool> isWriting() async {
-    try {
-      bool isWriting = await platform.invokeMethod('isWriting');
-      return isWriting;
-    } catch (e) {
-      log("Error invoking isWriting method: $e");
-      rethrow;
-    }
-  }
+  // static Future<bool> isWriting() async {
+  //   try {
+  //     bool isWriting = await platform.invokeMethod('isWriting');
+  //     return isWriting;
+  //   } catch (e) {
+  //     log("Error invoking isWriting method: $e");
+  //     rethrow;
+  //   }
+  // }
 
   /// Checks if the canvas is currently being written on.
-  static Future<bool> isShown() async {
-    try {
-      bool isShown = await platform.invokeMethod('isShown');
-      return isShown;
-    } catch (e) {
-      log("Error invoking isShown method: $e");
-      rethrow;
-    }
-  }
+  // static Future<bool> isShown() async {
+  //   try {
+  //     bool isShown = await platform.invokeMethod('isShown');
+  //     return isShown;
+  //   } catch (e) {
+  //     log("Error invoking isShown method: $e");
+  //     rethrow;
+  //   }
+  // }
 
   /// Checks if the canvas is currently being written on.
   static Future<bool> isInEditMode() async {
@@ -257,15 +268,15 @@ class CanvasController {
   }
 
   /// Checks if the canvas has been edited.
-  static Future<bool> isEdited() async {
-    try {
-      bool isEdited = await platform.invokeMethod('isEdited');
-      return isEdited;
-    } catch (e) {
-      log("Error invoking isWriting method: $e");
-      rethrow;
-    }
-  }
+  // static Future<bool> isEdited() async {
+  //   try {
+  //     bool isEdited = await platform.invokeMethod('isEdited');
+  //     return isEdited;
+  //   } catch (e) {
+  //     log("Error invoking isWriting method: $e");
+  //     rethrow;
+  //   }
+  // }
 
   /// Method to refresh current view.
   static Future<void> refreshCurrentView() async {
@@ -304,13 +315,13 @@ class CanvasController {
   }
 
   /// Method to refresh bitMap.
-  static Future<void> refreshBitmap() async {
-    try {
-      await platform.invokeMethod(
-        'refreshBitmap',
-      );
-    } catch (e) {
-      log("Error invoking refreshBitmap method: $e");
-    }
-  }
+  // static Future<void> refreshBitmap() async {
+  //   try {
+  //     await platform.invokeMethod(
+  //       'refreshBitmap',
+  //     );
+  //   } catch (e) {
+  //     log("Error invoking refreshBitmap method: $e");
+  //   }
+  // }
 }
