@@ -100,6 +100,8 @@ class HandwrittenViewPlatformView(
                 }
                 "getStrokeWidth" -> getStrokeWidth(result)
                 "getDrawMode" -> getDrawMode(result)
+                "isDirty" -> isDirty(result)
+                "isInEditMode" -> isInEditMode(result)
                 "destroy" -> onDestroy()
                 "refreshCurrentView" -> refreshCurrentView()
                 "setDrawMode" -> {
@@ -112,6 +114,20 @@ class HandwrittenViewPlatformView(
                 }
                 else -> result.notImplemented()
             }
+        }
+    }
+
+    private fun isDirty(result: MethodChannel.Result) {
+        if(initFlag) {
+            val isDirty: Boolean = handwrittenView.isDirty
+            result.success(isDirty)
+        }
+    }
+
+    private fun isInEditMode(result: MethodChannel.Result) {
+        if(initFlag) {
+            val isInEditMode: Boolean = handwrittenView.isInEditMode
+            result.success(isInEditMode)
         }
     }
 
