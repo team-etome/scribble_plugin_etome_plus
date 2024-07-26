@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scribble_etome_plugin_plus/canvas.dart';
@@ -94,11 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Icons.remove),
                 ),
                 IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isOverlay = !isOverlay;
-                    });
-                    CanvasController.onWindowFocusChanged(isOverlay);
+                  onPressed: () async {
+                    final isInEditMode = await CanvasController.isInEditMode();
+                    log('isInEditMode = $isInEditMode');
                   },
                   icon: const Icon(Icons.abc_outlined),
                 ),
