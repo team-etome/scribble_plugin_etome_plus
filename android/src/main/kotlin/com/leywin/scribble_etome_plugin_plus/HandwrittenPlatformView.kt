@@ -69,6 +69,8 @@ class HandwrittenViewPlatformView(
     private fun setupHandwrittenView(creationParams: Map<String?, Any?>) {
         val drawingToolIndex = creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
         handwrittenView.drawMode = drawingToolIndex
+        val isHandwriting = creationParams["isHandwriting"] as? Boolean ?: true
+        handwrittenView.enableHandwritten(isHandwriting)
 
         val layers = mutableListOf<Bitmap?>()
         layers.add(BitmapManager.createBlankBitmap())
@@ -112,9 +114,17 @@ class HandwrittenViewPlatformView(
                     val isOverlay = call.argument<Boolean>("onWindowFocusChanged")
                     onWindowFocusChanged(isOverlay ?: true)
                 }
+                "isHandwriting" -> {
+                    val isHandwriting = call.argument<Boolean>("isHandwriting")
+                    isHandwriting(isHandwriting ?: true)
+                }
                 else -> result.notImplemented()
             }
         }
+    }
+
+    private fun isHandwriting(isHandwriting: Boolean) {
+        handwrittenView.enableHandwritten(isHandwriting)
     }
 
     private fun isDirty(result: MethodChannel.Result) {
