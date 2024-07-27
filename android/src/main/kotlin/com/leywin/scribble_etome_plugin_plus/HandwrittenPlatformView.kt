@@ -50,6 +50,9 @@ class HandwrittenViewPlatformView(
         val bottomSpaceHeight = (creationParams?.get("bottomSpaceHeight") as? Double)?.toInt() ?: 0
         setViewSize(R.id.bottomSpace, bottomSpaceHeight, null, density)
 
+        // Adjust HandwrittenView height
+        adjustHandwrittenViewHeight(topSpaceHeight, density)
+
         setupHandwrittenView(creationParams!!)
         setupMethodChannel(channel)
     }
@@ -64,6 +67,14 @@ class HandwrittenViewPlatformView(
             layoutParams.width = (it * density).toInt()
         }
         view.layoutParams = layoutParams
+    }
+
+    private fun adjustHandwrittenViewHeight(topSpaceHeightDp: Int, density: Float) {
+        // Calculate the new height
+        val newHeightPx = layout.resources.displayMetrics.heightPixels - (topSpaceHeightDp * density).toInt()
+        val layoutParams = handwrittenView.layoutParams as RelativeLayout.LayoutParams
+        layoutParams.height = newHeightPx
+        handwrittenView.layoutParams = layoutParams
     }
 
     private fun setupHandwrittenView(creationParams: Map<String?, Any?>) {
@@ -227,5 +238,4 @@ class HandwrittenViewPlatformView(
         }
         handwrittenView.stopThread()
     }
-
 }
