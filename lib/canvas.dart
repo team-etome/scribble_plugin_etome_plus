@@ -12,18 +12,12 @@ class CanvasEtome extends StatelessWidget {
       this.drawingTool = DrawingTool.ballPointPen,
       this.penWidthValue = 3,
       this.isHandwriting = true,
-      this.leftSideWidth,
-      this.rightSideWidth,
-      this.blackLineHeight = 1,
       this.bottomSpaceHeight});
 
   final int topSpaceHeight;
-  final int? leftSideWidth;
-  final int? rightSideWidth;
   final int? bottomSpaceHeight;
   final String? imageName;
   final String saveFolder;
-  final int? blackLineHeight;
   final DrawingTool drawingTool;
   final int penWidthValue;
   final bool isHandwriting;
@@ -40,8 +34,6 @@ class CanvasEtome extends StatelessWidget {
       "drawingToolIndex": drawingTool.index,
       "penWidthValue": penWidthValue,
       "isHandwriting": isHandwriting,
-      "leftSideWidth": leftSideWidth,
-      "rightSideWidth": rightSideWidth,
       "bottomSpaceHeight": bottomSpaceHeight,
     };
 
