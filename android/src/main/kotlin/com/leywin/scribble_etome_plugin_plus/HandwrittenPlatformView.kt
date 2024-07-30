@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.handwritten.HandwrittenView
-import android.widget.RelativeLayout
 import com.leywin.scribble_etome_plugin_plus.BitmapManager.saveBitmapFromPath
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
@@ -32,50 +31,10 @@ class HandwrittenViewPlatformView(
 
         savePath = creationParams?.get("saveFolderPath") as? String ?: savePath
 
-        val density = context.resources.displayMetrics.density
-
-        // AppBar space
-        val topSpaceHeight = (creationParams?.get("topSpaceHeight") as? Double)?.toInt() ?: 45
-        setViewSize(R.id.appBarSpace, topSpaceHeight, null, density)
-
-        // Left space
-        val leftSideWidth = (creationParams?.get("leftSideWidth") as? Double)?.toInt() ?: 0
-        setViewSize(R.id.leftSideView, null, leftSideWidth, density)
-
-        // Right space
-        val rightSideWidth = (creationParams?.get("rightSideWidth") as? Double)?.toInt() ?: 0
-        setViewSize(R.id.rightSideView, null, rightSideWidth, density)
-
-        // Bottom space
-        val bottomSpaceHeight = (creationParams?.get("bottomSpaceHeight") as? Double)?.toInt() ?: 0
-        setViewSize(R.id.bottomSpace, bottomSpaceHeight, null, density)
-
-        // Adjust HandwrittenView height
-        adjustHandwrittenViewHeight(topSpaceHeight, density)
-
         setupHandwrittenView(creationParams!!)
         setupMethodChannel(channel)
     }
 
-    private fun setViewSize(viewId: Int, heightDp: Int?, widthDp: Int?, density: Float) {
-        val view = layout.findViewById<View>(viewId)
-        val layoutParams = view.layoutParams as RelativeLayout.LayoutParams
-        heightDp?.let {
-            layoutParams.height = (it * density).toInt()
-        }
-        widthDp?.let {
-            layoutParams.width = (it * density).toInt()
-        }
-        view.layoutParams = layoutParams
-    }
-
-    private fun adjustHandwrittenViewHeight(topSpaceHeightDp: Int, density: Float) {
-        // Calculate the new height
-        val newHeightPx = layout.resources.displayMetrics.heightPixels - (topSpaceHeightDp * density).toInt()
-        val layoutParams = handwrittenView.layoutParams as RelativeLayout.LayoutParams
-        layoutParams.height = newHeightPx
-        handwrittenView.layoutParams = layoutParams
-    }
 
     private fun setupHandwrittenView(creationParams: Map<String?, Any?>) {
         val drawingToolIndex = creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
