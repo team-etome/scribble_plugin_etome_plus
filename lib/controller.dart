@@ -281,6 +281,7 @@ class CanvasController {
   static Future<void> refreshCurrentView() async {
     try {
       await platform.invokeMethod('refreshCurrentView');
+      log('refreshCurrentView');
     } catch (e) {
       log("Error invoking refreshCurrentView method: $e");
     }
@@ -290,6 +291,7 @@ class CanvasController {
   static Future<void> refreshDrawableState() async {
     try {
       await platform.invokeMethod('refreshDrawableState');
+      log('refreshDrawableState');
     } catch (e) {
       log("Error invoking refreshDrawableState method: $e");
     }

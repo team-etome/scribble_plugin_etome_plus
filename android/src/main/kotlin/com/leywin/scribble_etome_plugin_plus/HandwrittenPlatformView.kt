@@ -13,6 +13,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import java.io.ByteArrayOutputStream
 
+
+
 class HandwrittenViewPlatformView(
     context: Context,
     creationParams: Map<String?, Any?>?,
@@ -76,6 +78,7 @@ class HandwrittenViewPlatformView(
                 "isInEditMode" -> isInEditMode(result)
                 "destroy" -> onDestroy()
                 "refreshCurrentView" -> refreshCurrentView()
+                "refreshDrawableState" -> refreshDrawableState()
                 "setDrawMode" -> {
                     val strokeType = call.argument<Int>("strokeType")
                     setDrawMode(strokeType ?: 0)
@@ -93,6 +96,10 @@ class HandwrittenViewPlatformView(
         }
     }
 
+    private fun refreshDrawableState() {
+        handwrittenView.refreshDrawableState()
+        Log.d("CanvasFunction", "refreshDrawableState")
+    }
     private fun isHandwriting(isHandwriting: Boolean) {
         handwrittenView.enableHandwritten(isHandwriting)
     }
@@ -125,6 +132,7 @@ class HandwrittenViewPlatformView(
 
     private fun refreshCurrentView(){
         handwrittenView.refreshCurrentView()
+        Log.d("CanvasFunction", "refreshCurrentView")
     }
 
     private fun setStrokeWidth(strokeWidth: Int) {
