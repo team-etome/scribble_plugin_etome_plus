@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -113,12 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       CanvasController.setDrawingTool(DrawingTool.highlight);
                     },
                     icon: const Icon(Icons.remove),
+                  ), 
+                  IconButton(
+                    onPressed: () async {
+                      CanvasController.refreshDrawableState();
+                    },
+                    icon: const Icon(Icons.abc_outlined),
                   ),
                   IconButton(
                     onPressed: () async {
-                      final isInEditMode =
-                          await CanvasController.isInEditMode();
-                      log('isInEditMode = $isInEditMode');
+                      CanvasController.refreshCurrentView();
                     },
                     icon: const Icon(Icons.abc_outlined),
                   ),
@@ -147,6 +150,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     icon: const Icon(Icons.save),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      try {
+                        File file = File('/storage/emulated/0/Documents/2.png');
+                        if (!await file.exists()) return;
+                        await Future.delayed(
+                          const Duration(milliseconds: 600),
+                          () {
+                            CanvasController.load('2');
+                          },
+                        );
+                      } on Exception catch (e) {
+                        Fluttertoast.showToast(msg: "Failed $e");
+                      }
+                    },
+                    icon: const Icon(Icons.download),
                   ),
                 ],
               ),
