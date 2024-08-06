@@ -141,17 +141,6 @@ class CanvasController {
   }
 
   /// Method to get the current drawing bitmap.
-  static Future<List<int>> getBitmap() async {
-    try {
-      List<int> bitmap = await platform.invokeMethod('getBitmap');
-      return bitmap;
-    } catch (e) {
-      log("Error invoking getBitmap method: $e");
-      rethrow;
-    }
-  }
-
-  /// Method to get the current drawing bitmap.
   static Future<int> getStrokeWidth() async {
     try {
       int penWidth = await platform.invokeMethod('getStrokeWidth');
@@ -229,6 +218,17 @@ class CanvasController {
       return isDirty;
     } catch (e) {
       log("Error invoking isDirty method: $e");
+      rethrow;
+    }
+  }
+
+  /// Method to get the current drawing bitmap.
+  static Future<List<int>> getBitmap() async {
+    try {
+      final List<dynamic> result = await platform.invokeMethod('getBitmap');
+      return List<int>.from(result);
+    } catch (e) {
+      log("Error invoking getBitmap method: $e");
       rethrow;
     }
   }
