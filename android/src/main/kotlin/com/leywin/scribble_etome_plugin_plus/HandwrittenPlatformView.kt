@@ -3,6 +3,7 @@ package com.leywin.scribble_etome_plugin_plus
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -118,6 +119,7 @@ class HandwrittenViewPlatformView(
                 "getStrokeWidth" -> getStrokeWidth(result)
                 "getDrawMode" -> getDrawMode(result)
                 "isDirty" -> isDirty(result)
+                "getBitmap" -> getBitmap(result)
                 "isInEditMode" -> isInEditMode(result)
                 "destroy" -> onDestroy()
                 "refreshCurrentView" -> refreshCurrentView()
@@ -136,6 +138,27 @@ class HandwrittenViewPlatformView(
                 }
                 else -> result.notImplemented()
             }
+        }
+    }
+
+    private fun getBitmap(result: MethodChannel.Result) {
+        try {
+            val bitmap = Bitmap.createBitmap(
+                handwrittenView.width,
+                handwrittenView.height,
+                Bitmap.Config.ARGB_8888
+            )
+
+            val canvas = Canvas(bitmap)
+            handwrittenView.draw(canvas)
+
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+
+            result.success(byteArray.toList())
+        } catch (e: Exception) {
+            result.error("BITMAP_ERROR", "Failed to get bitmap", e.localizedMessage)
         }
     }
 
