@@ -1,6 +1,6 @@
 name: scribble_etome_plugin_plus
 description: "Writing sdk for etome tablet"
-version: 0.0.6
+version: 0.0.7
 homepage:
 
 environment:

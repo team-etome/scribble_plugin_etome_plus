@@ -61,133 +61,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 45,
-        title: Row(
-          children: [
-            Container(
-              height: 45,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.clear();
-                    },
-                    icon: const Icon(Icons.clear),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.undo();
-                    },
-                    icon: const Icon(Icons.undo),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.redo();
-                    },
-                    icon: const Icon(Icons.redo),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.setDrawingTool(DrawingTool.fountainPen);
-                    },
-                    icon: const Icon(Icons.window_outlined),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.setDrawingTool(DrawingTool.areaEraser);
-                    },
-                    icon: const Icon(Icons.remove),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      CanvasController.setDrawingTool(DrawingTool.highlight);
-                    },
-                    icon: const Icon(Icons.remove),
-                  ), 
-                  IconButton(
-                    onPressed: () async {
-                      CanvasController.refreshDrawableState();
-                    },
-                    icon: const Icon(Icons.abc_outlined),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      CanvasController.refreshCurrentView();
-                    },
-                    icon: const Icon(Icons.abc_outlined),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      _showAlertDialog(context);
-                    },
-                    icon: const Icon(
-                      Icons.warning_amber_outlined,
-                      color: Colors.red,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      try {
-                        File file = File('/storage/emulated/0/Documents/2.png');
-                        if (await file.exists()) file.delete();
-                        Uint8List? bytes = await screenshotController.capture();
-                        if (bytes != null) {
-                          await file.writeAsBytes(bytes);
-                          CanvasController.clear();
-                          Fluttertoast.showToast(msg: "Saved successfully");
-                        }
-                      } on Exception catch (e) {
-                        Fluttertoast.showToast(msg: "Failed $e");
-                      }
-                    },
-                    icon: const Icon(Icons.save),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      try {
-                        File file = File('/storage/emulated/0/Documents/2.png');
-                        if (!await file.exists()) return;
-                        await Future.delayed(
-                          const Duration(milliseconds: 600),
-                          () {
-                            CanvasController.load('2');
-                          },
-                        );
-                      } on Exception catch (e) {
-                        Fluttertoast.showToast(msg: "Failed $e");
-                      }
-                    },
-                    icon: const Icon(Icons.download),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Column(
+      // appBar: AppBar(
+      //   toolbarHeight: 45,
+      //   title:
+      // ),
+      body: Stack(
         children: [
-          Expanded(
-            child: Screenshot(
-              controller: screenshotController,
-              child: const CanvasEtome(
-                saveFolder: 'Documents',
-              ),
+          Screenshot(
+            controller: screenshotController,
+            child: const CanvasEtome(
+              saveFolder: 'Documents',
             ),
           ),
-          Container(
-            height: 45,
-            color: Colors.green,
-          ),
+          Positioned(
+            top: 0,
+            child: buildContainer(),
+          )
+          // Container(
+          //   height: 45,
+          //   color: Colors.green,
+          // ),
         ],
       ),
     );
@@ -210,6 +103,129 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         );
       },
+    );
+  }
+
+  Container buildContainer() {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 1,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 45,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    CanvasController.clear();
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+                IconButton(
+                  onPressed: () {
+                    CanvasController.undo();
+                  },
+                  icon: const Icon(Icons.undo),
+                ),
+                IconButton(
+                  onPressed: () {
+                    CanvasController.redo();
+                  },
+                  icon: const Icon(Icons.redo),
+                ),
+                IconButton(
+                  onPressed: () {
+                    CanvasController.setDrawingTool(DrawingTool.fountainPen);
+                  },
+                  icon: const Icon(Icons.window_outlined),
+                ),
+                IconButton(
+                  onPressed: () {
+                    CanvasController.setDrawingTool(DrawingTool.areaEraser);
+                  },
+                  icon: const Icon(Icons.remove),
+                ),
+                IconButton(
+                  onPressed: () {
+                    CanvasController.setDrawingTool(DrawingTool.highlight);
+                  },
+                  icon: const Icon(Icons.remove),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    CanvasController.refreshDrawableState();
+                  },
+                  icon: const Icon(Icons.abc_outlined),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    CanvasController.refreshCurrentView();
+                  },
+                  icon: const Icon(Icons.abc_outlined),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _showAlertDialog(context);
+                  },
+                  icon: const Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.red,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    try {
+                      File file = File('/storage/emulated/0/Documents/2.png');
+                      if (await file.exists()) file.delete();
+                      Uint8List? bytes = await screenshotController.capture();
+                      if (bytes != null) {
+                        await file.writeAsBytes(bytes);
+                        CanvasController.clear();
+                        Fluttertoast.showToast(msg: "Saved successfully");
+                      }
+                    } on Exception catch (e) {
+                      Fluttertoast.showToast(msg: "Failed $e");
+                    }
+                  },
+                  icon: const Icon(Icons.save),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    try {
+                      File file = File('/storage/emulated/0/Documents/2.png');
+                      if (!await file.exists()) return;
+                      await Future.delayed(
+                        const Duration(milliseconds: 600),
+                        () {
+                          CanvasController.load('2');
+                        },
+                      );
+                    } on Exception catch (e) {
+                      Fluttertoast.showToast(msg: "Failed $e");
+                    }
+                  },
+                  icon: const Icon(Icons.download),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
