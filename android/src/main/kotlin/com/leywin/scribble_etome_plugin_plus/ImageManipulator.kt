@@ -1,11 +1,9 @@
 package com.leywin.scribble_etome_plugin_plus
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.util.Base64
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -122,24 +120,20 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
 
     fun doneImage() {
         imageView?.let {
-            val bitmap = handwrittenView.layer[handwrittenView.curLayerIndex]
+
+            val bitmap = Bitmap.createBitmap(
+                parentLayout.width,
+                parentLayout.height,
+                Bitmap.Config.ARGB_8888
+            )
+
             val canvas = Canvas(bitmap)
+            parentLayout.draw(canvas)
+            val layers = mutableListOf<Bitmap?>()
 
-            val location = IntArray(2)
-            it.getLocationOnScreen(location)
-            val parentLocation = IntArray(2)
-            parentLayout.getLocationOnScreen(parentLocation)
+            layers.add(bitmap)
 
-            // Calculate the correct coordinates within the canvas
-            val x = location[0].toFloat() - parentLocation[0] + it.width / 2
-            val y = location[1].toFloat() - parentLocation[1] + it.height / 2
-
-            val matrix = Matrix()
-            matrix.postScale(it.scaleX, it.scaleY, x, y)
-            matrix.postRotate(it.rotation, x, y)
-            matrix.postTranslate(x - it.width / 2, y - it.height / 2)
-
-            canvas.drawBitmap((it.drawable as BitmapDrawable).bitmap, matrix, Paint())
+            handwrittenView.layer = layers
 
             parentLayout.removeView(it)
             imageView = null
