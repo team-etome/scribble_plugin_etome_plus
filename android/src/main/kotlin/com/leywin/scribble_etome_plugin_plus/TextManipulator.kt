@@ -120,4 +120,11 @@ class TextManipulator(private val parentLayout: RelativeLayout, private val hand
             textView = null
         }
     }
+
+    fun cancelText() {
+        textView?.let {
+            parentLayout.removeView(it)
+            textView = null
+        }
+    }
 }

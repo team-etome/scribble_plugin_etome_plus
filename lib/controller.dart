@@ -318,7 +318,7 @@ class CanvasController {
   /// Method to set addText.
   static Future<void> addText(String text) async {
     try {
-      await platform.invokeMethod('addText', {'text': text});
+      await platform.invokeMethod('text.addText', {'text': text});
     } catch (e) {
       log("Error invoking addText method: $e");
     }
@@ -330,6 +330,15 @@ class CanvasController {
       await platform.invokeMethod('text.doneText');
     } catch (e) {
       log("Error invoking doneText method: $e");
+    }
+  }
+
+  /// Method to cancel text and remove it from canvas.
+  static Future<void> cancelText() async {
+    try {
+      await platform.invokeMethod('text.cancelText');
+    } catch (e) {
+      log("Error invoking cancelText method: $e");
     }
   }
 
@@ -372,7 +381,7 @@ class CanvasController {
   /// Method to add an image.
   static Future<void> addImage(String base64String) async {
     try {
-      await platform.invokeMethod('addImage', {'base64String': base64String});
+      await platform.invokeMethod('image.addImage', {'base64String': base64String});
     } catch (e) {
       log("Error invoking addImage method: $e");
     }
@@ -384,6 +393,15 @@ class CanvasController {
       await platform.invokeMethod('image.doneImage');
     } catch (e) {
       log("Error invoking doneImage method: $e");
+    }
+  }
+
+  /// Method to cancel and remove image from canvas.
+  static Future<void> cancelImage() async {
+    try {
+      await platform.invokeMethod('image.cancelImage');
+    } catch (e) {
+      log("Error invoking cancelImage method: $e");
     }
   }
 

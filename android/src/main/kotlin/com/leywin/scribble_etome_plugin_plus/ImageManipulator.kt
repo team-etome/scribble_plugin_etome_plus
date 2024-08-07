@@ -140,4 +140,11 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
             imageView = null
         }
     }
+
+    fun cancelImage() {
+        imageView?.let {
+            parentLayout.removeView(it)
+            imageView = null
+        }
+    }
 }
