@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream
 
 
 
+
 class HandwrittenViewPlatformView(
     context: Context,
     creationParams: Map<String?, Any?>?,
@@ -27,11 +28,21 @@ class HandwrittenViewPlatformView(
     private var savePath: String = "/storage/emulated/0/Notes"
     private var initFlag: Boolean = false
 
+    private val textManipulator: TextManipulator
+    private val imageManipulator: ImageManipulator
+
     init {
         val parentViewGroup = (context as? Activity)?.findViewById<ViewGroup>(android.R.id.content)
 
         layout = LayoutInflater.from(context).inflate(R.layout.activity_main, parentViewGroup, false)
         handwrittenView = layout.findViewById(R.id.handwrittenView)
+
+        val handwrittenParent = layout.findViewById<RelativeLayout>(R.id.handwrittenParent)
+
+
+
+        textManipulator = TextManipulator(handwrittenParent,handwrittenView)
+        imageManipulator = ImageManipulator(handwrittenParent,handwrittenView)
 
         savePath = creationParams?.get("saveFolderPath") as? String ?: savePath
 
@@ -60,7 +71,6 @@ class HandwrittenViewPlatformView(
         setupMethodChannel(channel)
     }
 
-
     private fun setupHandwrittenView(creationParams: Map<String?, Any?>) {
         val drawingToolIndex = creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
         handwrittenView.drawMode = drawingToolIndex
@@ -76,7 +86,6 @@ class HandwrittenViewPlatformView(
         handwrittenView.startThread()
         initFlag = true
     }
-
 
     private fun setViewSize(viewId: Int, heightDp: Int?, widthDp: Int?, density: Float) {
         val view = layout.findViewById<View>(viewId)
@@ -116,6 +125,28 @@ class HandwrittenViewPlatformView(
                     val penWidth = call.argument<Int>("strokeWidth")
                     setStrokeWidth(penWidth ?: 0)
                 }
+                // New text manipulation methods
+                "addText" -> {
+                    val text = call.argument<String>("text")
+                    textManipulator.addText(text)
+                }
+                "text.increaseSize" -> textManipulator.increaseSize()
+                "text.decreaseSize" -> textManipulator.decreaseSize()
+                "text.rotateRight" -> textManipulator.rotateRight()
+                "text.rotateLeft" -> textManipulator.rotateLeft()
+                "text.doneText" -> textManipulator.doneText()
+                
+                // New image manipulation methods
+                "addImage" -> {
+                    val base64string = call.argument<String>("base64String")
+                    imageManipulator.addImage(base64string)
+                }
+                "image.increaseSize" -> imageManipulator.increaseSize()
+                "image.decreaseSize" -> imageManipulator.decreaseSize()
+                "image.rotateRight" -> imageManipulator.rotateRight()
+                "image.rotateLeft" -> imageManipulator.rotateLeft()
+                "image.doneImage" -> imageManipulator.doneImage()
+
                 "getStrokeWidth" -> getStrokeWidth(result)
                 "getDrawMode" -> getDrawMode(result)
                 "isDirty" -> isDirty(result)
@@ -139,6 +170,21 @@ class HandwrittenViewPlatformView(
                 else -> result.notImplemented()
             }
         }
+    }
+
+    private fun clear() {
+        Log.d("CanvasFunction", "clear button")
+        handwrittenView.clearLayer(handwrittenView.curLayerIndex)
+    }
+
+    private fun undo(result: MethodChannel.Result) {
+        handwrittenView.undo()
+        result.success("Undo action performed")
+    }
+
+    private fun redo(result: MethodChannel.Result) {
+        handwrittenView.redo()
+        result.success("Redo action performed")
     }
 
     private fun getBitmap(result: MethodChannel.Result) {
@@ -166,19 +212,20 @@ class HandwrittenViewPlatformView(
         handwrittenView.refreshDrawableState()
         Log.d("CanvasFunction", "refreshDrawableState")
     }
+
     private fun isHandwriting(isHandwriting: Boolean) {
         handwrittenView.enableHandwritten(isHandwriting)
     }
 
     private fun isDirty(result: MethodChannel.Result) {
-        if(initFlag) {
+        if (initFlag) {
             val isDirty: Boolean = handwrittenView.isDirty
             result.success(isDirty)
         }
     }
 
     private fun isInEditMode(result: MethodChannel.Result) {
-        if(initFlag) {
+        if (initFlag) {
             val isInEditMode: Boolean = handwrittenView.isInEditMode
             result.success(isInEditMode)
         }
@@ -196,7 +243,7 @@ class HandwrittenViewPlatformView(
         }
     }
 
-    private fun refreshCurrentView(){
+    private fun refreshCurrentView() {
         handwrittenView.refreshCurrentView()
         Log.d("CanvasFunction", "refreshCurrentView")
     }
@@ -240,21 +287,6 @@ class HandwrittenViewPlatformView(
         layers.add(bitMap)
         handwrittenView.layer = layers
         result.success("successfully loaded $filePath")
-    }
-
-    private fun clear() {
-        Log.d("CanvasFunction", "clear button")
-        handwrittenView.clearLayer(handwrittenView.curLayerIndex)
-    }
-
-    private fun undo(result: MethodChannel.Result) {
-        handwrittenView.undo()
-        result.success("Undo action performed")
-    }
-
-    private fun redo(result: MethodChannel.Result) {
-        handwrittenView.redo()
-        result.success("Redo action performed")
     }
 
     override fun getView(): View {
