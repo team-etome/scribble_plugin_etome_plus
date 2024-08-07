@@ -131,13 +131,13 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
             parentLayout.getLocationOnScreen(parentLocation)
 
             // Calculate the correct coordinates within the canvas
-            val x = location[0].toFloat() - parentLocation[0]
-            val y = location[1].toFloat() - parentLocation[1]
+            val x = location[0].toFloat() - parentLocation[0] + it.width / 2
+            val y = location[1].toFloat() - parentLocation[1] + it.height / 2
 
             val matrix = Matrix()
-            matrix.postTranslate(x, y)
-            matrix.postRotate(it.rotation, x + it.width / 2, y + it.height / 2)
-            matrix.postScale(it.scaleX, it.scaleY, x + it.width / 2, y + it.height / 2)
+            matrix.postScale(it.scaleX, it.scaleY, x, y)
+            matrix.postRotate(it.rotation, x, y)
+            matrix.postTranslate(x - it.width / 2, y - it.height / 2)
 
             canvas.drawBitmap((it.drawable as BitmapDrawable).bitmap, matrix, Paint())
 
