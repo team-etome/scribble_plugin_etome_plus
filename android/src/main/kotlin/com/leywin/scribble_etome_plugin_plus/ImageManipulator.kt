@@ -124,10 +124,15 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
         imageView?.let {
             val bitmap = handwrittenView.layer[handwrittenView.curLayerIndex]
             val canvas = Canvas(bitmap)
+
             val location = IntArray(2)
             it.getLocationOnScreen(location)
-            val x = location[0].toFloat()
-            val y = location[1].toFloat()
+            val parentLocation = IntArray(2)
+            parentLayout.getLocationOnScreen(parentLocation)
+
+            // Calculate the correct coordinates within the canvas
+            val x = location[0].toFloat() - parentLocation[0]
+            val y = location[1].toFloat() - parentLocation[1]
 
             val matrix = Matrix()
             matrix.postTranslate(x, y)
