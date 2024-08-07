@@ -1,11 +1,16 @@
 package com.leywin.scribble_etome_plugin_plus
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Rect
+import android.os.Handler
+import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.MotionEvent
+import android.view.PixelCopy
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.handwritten.HandwrittenView
@@ -120,25 +125,37 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
 
     fun doneImage() {
         imageView?.let {
-
             val bitmap = Bitmap.createBitmap(
                 parentLayout.width,
                 parentLayout.height,
                 Bitmap.Config.ARGB_8888
             )
 
-            val canvas = Canvas(bitmap)
-            parentLayout.draw(canvas)
-            val layers = mutableListOf<Bitmap?>()
+            val location = IntArray(2)
+            parentLayout.getLocationOnScreen(location)
 
-            layers.add(bitmap)
+            PixelCopy.request(
+                (parentLayout.context as Activity).window,
+                Rect(location[0], location[1], location[0] + parentLayout.width, location[1] + parentLayout.height),
+                bitmap,
+                { copyResult ->
+                    if (copyResult == PixelCopy.SUCCESS) {
+                        val layers = mutableListOf<Bitmap?>()
+                        layers.add(bitmap)
+                        handwrittenView.layer = layers
 
-            handwrittenView.layer = layers
-
-            parentLayout.removeView(it)
-            imageView = null
+                        parentLayout.removeView(it)
+                        imageView = null
+                    } else {
+                        // Handle the error case
+                        Log.e("PixelCopy", "Failed to copy pixels: $copyResult")
+                    }
+                },
+                Handler(Looper.getMainLooper())
+            )
         }
     }
+
 
     fun cancelImage() {
         imageView?.let {
