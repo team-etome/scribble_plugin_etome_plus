@@ -126,7 +126,7 @@ class HandwrittenViewPlatformView(
                     setStrokeWidth(penWidth ?: 0)
                 }
                 // New text manipulation methods
-                "addText" -> {
+                "text.addText" -> {
                     val text = call.argument<String>("text")
                     textManipulator.addText(text)
                 }
@@ -135,9 +135,10 @@ class HandwrittenViewPlatformView(
                 "text.rotateRight" -> textManipulator.rotateRight()
                 "text.rotateLeft" -> textManipulator.rotateLeft()
                 "text.doneText" -> textManipulator.doneText()
-                
+                "text.cancelText" -> textManipulator.cancelText()
+
                 // New image manipulation methods
-                "addImage" -> {
+                "image.addImage" -> {
                     val base64string = call.argument<String>("base64String")
                     imageManipulator.addImage(base64string)
                 }
@@ -146,6 +147,7 @@ class HandwrittenViewPlatformView(
                 "image.rotateRight" -> imageManipulator.rotateRight()
                 "image.rotateLeft" -> imageManipulator.rotateLeft()
                 "image.doneImage" -> imageManipulator.doneImage()
+                "image.cancelImage" -> imageManipulator.cancelImage()
 
                 "getStrokeWidth" -> getStrokeWidth(result)
                 "getDrawMode" -> getDrawMode(result)
