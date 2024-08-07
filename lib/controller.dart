@@ -223,10 +223,10 @@ class CanvasController {
   }
 
   /// Method to get the current drawing bitmap.
-  static Future<List<int>> getBitmap() async {
+  static Future<Uint8List> getBitmap() async {
     try {
       final List<dynamic> result = await platform.invokeMethod('getBitmap');
-      return List<int>.from(result);
+      return Uint8List.fromList(List<int>.from(result));
     } catch (e) {
       log("Error invoking getBitmap method: $e");
       rethrow;
@@ -315,14 +315,111 @@ class CanvasController {
     }
   }
 
-  /// Method to refresh bitMap.
-  // static Future<void> refreshBitmap() async {
-  //   try {
-  //     await platform.invokeMethod(
-  //       'refreshBitmap',
-  //     );
-  //   } catch (e) {
-  //     log("Error invoking refreshBitmap method: $e");
-  //   }
-  // }
+  /// Method to set addText.
+  static Future<void> addText(String text) async {
+    try {
+      await platform.invokeMethod('addText', {'text': text});
+    } catch (e) {
+      log("Error invoking addText method: $e");
+    }
+  }
+
+  /// Method to finish adding text and save it to the canvas.
+  static Future<void> doneText() async {
+    try {
+      await platform.invokeMethod('text.doneText');
+    } catch (e) {
+      log("Error invoking doneText method: $e");
+    }
+  }
+
+  /// Method to increase the text size.
+  static Future<void> increaseTextSize() async {
+    try {
+      await platform.invokeMethod('text.increaseSize');
+    } catch (e) {
+      log("Error invoking increaseTextSize method: $e");
+    }
+  }
+
+  /// Method to decrease the text size.
+  static Future<void> decreaseTextSize() async {
+    try {
+      await platform.invokeMethod('text.decreaseSize');
+    } catch (e) {
+      log("Error invoking decreaseTextSize method: $e");
+    }
+  }
+
+  /// Method to rotate the text to the right.
+  static Future<void> rotateTextRight() async {
+    try {
+      await platform.invokeMethod('text.rotateRight');
+    } catch (e) {
+      log("Error invoking rotateTextRight method: $e");
+    }
+  }
+
+  /// Method to rotate the text to the left.
+  static Future<void> rotateTextLeft() async {
+    try {
+      await platform.invokeMethod('text.rotateLeft');
+    } catch (e) {
+      log("Error invoking rotateTextLeft method: $e");
+    }
+  }
+
+  /// Method to add an image.
+  static Future<void> addImage(String base64String) async {
+    try {
+      await platform.invokeMethod('addImage', {'base64String': base64String});
+    } catch (e) {
+      log("Error invoking addImage method: $e");
+    }
+  }
+
+  /// Method to finish adding the image and save it to the canvas.
+  static Future<void> doneImage() async {
+    try {
+      await platform.invokeMethod('image.doneImage');
+    } catch (e) {
+      log("Error invoking doneImage method: $e");
+    }
+  }
+
+  /// Method to increase the image size.
+  static Future<void> increaseImageSize() async {
+    try {
+      await platform.invokeMethod('image.increaseSize');
+    } catch (e) {
+      log("Error invoking increaseImageSize method: $e");
+    }
+  }
+
+  /// Method to decrease the image size.
+  static Future<void> decreaseImageSize() async {
+    try {
+      await platform.invokeMethod('image.decreaseSize');
+    } catch (e) {
+      log("Error invoking decreaseImageSize method: $e");
+    }
+  }
+
+  /// Method to rotate the image to the right.
+  static Future<void> rotateImageRight() async {
+    try {
+      await platform.invokeMethod('image.rotateRight');
+    } catch (e) {
+      log("Error invoking rotateImageRight method: $e");
+    }
+  }
+
+  /// Method to rotate the image to the left.
+  static Future<void> rotateImageLeft() async {
+    try {
+      await platform.invokeMethod('image.rotateLeft');
+    } catch (e) {
+      log("Error invoking rotateImageLeft method: $e");
+    }
+  }
 }

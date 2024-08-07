@@ -5,32 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HandwrittenViewPlatformView">
+
     <View
         android:id="@+id/appBarSpace"
         android:layout_width="match_parent"
         android:layout_height="45dp" />
+
     <View
         android:id="@+id/leftSideView"
         android:layout_width="45dp"
         android:layout_height="match_parent"
         android:layout_below="@id/appBarSpace"
         android:layout_alignParentStart="true" />
-    <android.view.handwritten.HandwrittenView
-        android:id="@+id/handwrittenView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_below="@id/appBarSpace"
-        android:layout_toEndOf="@id/leftSideView"
-        android:layout_toStartOf="@id/rightSideView" />
+
     <View
         android:id="@+id/rightSideView"
         android:layout_width="45dp"
         android:layout_height="match_parent"
         android:layout_below="@id/appBarSpace"
         android:layout_alignParentEnd="true" />
+
+    <RelativeLayout
+        android:id="@+id/handwrittenParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBarSpace"
+        android:layout_toEndOf="@id/leftSideView"
+        android:layout_toStartOf="@id/rightSideView">
+
+        <android.view.handwritten.HandwrittenView
+            android:id="@+id/handwrittenView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
     <View
         android:id="@+id/bottomSpace"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/handwrittenView" />
+        android:layout_below="@id/handwrittenParent" />
 </RelativeLayout>
