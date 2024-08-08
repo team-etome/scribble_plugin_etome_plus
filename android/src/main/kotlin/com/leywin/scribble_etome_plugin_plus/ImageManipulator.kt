@@ -140,7 +140,7 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
                 bitmap,
                 { copyResult ->
                     if (copyResult == PixelCopy.SUCCESS) {
-                        val layers = mutableListOf<Bitmap?>()
+                        val layers = handwrittenView.layer.toMutableList()
                         layers.add(bitmap)
                         handwrittenView.layer = layers
 
