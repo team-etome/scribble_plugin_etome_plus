@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 
 class HandwrittenViewPlatformView(
     context: Context,
-    creationParams: Map<String?, Any?>?,
+    creationParams: Map<*, *>?,
     channel: MethodChannel
 ) : PlatformView {
     private val handwrittenView: HandwrittenView
@@ -71,7 +71,7 @@ class HandwrittenViewPlatformView(
         setupMethodChannel(channel)
     }
 
-    private fun setupHandwrittenView(creationParams: Map<String?, Any?>) {
+    private fun setupHandwrittenView(creationParams: Map<*, *>) {
         val drawingToolIndex = creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
         handwrittenView.drawMode = drawingToolIndex
         val isHandwriting = creationParams["isHandwriting"] as? Boolean ?: true
@@ -153,6 +153,7 @@ class HandwrittenViewPlatformView(
                 "getDrawMode" -> getDrawMode(result)
                 "isDirty" -> isDirty(result)
                 "getBitmap" -> getBitmap(result)
+                "getWholeBitmap" -> getWholeBitmap(result)
                 "isInEditMode" -> isInEditMode(result)
                 "destroy" -> onDestroy()
                 "refreshCurrentView" -> refreshCurrentView()
@@ -199,6 +200,28 @@ class HandwrittenViewPlatformView(
 
             val canvas = Canvas(bitmap)
             handwrittenView.draw(canvas)
+
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+
+            result.success(byteArray.toList())
+        } catch (e: Exception) {
+            result.error("BITMAP_ERROR", "Failed to get bitmap", e.localizedMessage)
+        }
+    }
+
+    private fun getWholeBitmap(result: MethodChannel.Result) {
+        val handwrittenParent = layout.findViewById<RelativeLayout>(R.id.handwrittenParent)
+        try {
+            val bitmap = Bitmap.createBitmap(
+                handwrittenParent.width,
+                handwrittenParent.height,
+                Bitmap.Config.ARGB_8888
+            )
+
+            val canvas = Canvas(bitmap)
+            handwrittenParent.draw(canvas)
 
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)

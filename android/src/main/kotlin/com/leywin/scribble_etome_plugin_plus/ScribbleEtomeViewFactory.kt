@@ -9,7 +9,7 @@ import io.flutter.plugin.platform.PlatformViewFactory
 class ScribbleEtomeViewFactory(private val channel: MethodChannel) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         // You may need to pass initialization parameters from Flutter to your HandwrittenView
-        val creationParams = args as Map<String?, Any?>?
+        val creationParams = args as Map<*, *>?
         return HandwrittenViewPlatformView(context, creationParams, channel)
     }
 }

@@ -233,6 +233,17 @@ class CanvasController {
     }
   }
 
+  /// Method to get the current drawing bitmap.
+  static Future<Uint8List> getWholeBitmap() async {
+    try {
+      final List<dynamic> result = await platform.invokeMethod('getWholeBitmap');
+      return Uint8List.fromList(List<int>.from(result));
+    } catch (e) {
+      log("Error invoking getWholeBitmap method: $e");
+      rethrow;
+    }
+  }
+
   /// Checks if the canvas is currently being written on.
   // static Future<bool> isWriting() async {
   //   try {

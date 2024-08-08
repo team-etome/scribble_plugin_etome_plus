@@ -218,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       File file = File('/storage/emulated/0/Documents/2.png');
                       if (await file.exists()) file.delete();
                       // Uint8List? bytes = await screenshotController.capture();
-                      Uint8List? bytes = await CanvasController.getBitmap();
+                      Uint8List? bytes =
+                          await CanvasController.getWholeBitmap();
                       await file.writeAsBytes(bytes);
                       CanvasController.clear();
                       Fluttertoast.showToast(msg: "Saved successfully");

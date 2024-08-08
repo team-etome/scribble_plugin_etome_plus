@@ -16,7 +16,6 @@ class ScribbleEtomePlugin : FlutterPlugin, MethodCallHandler {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "canvas_etome_options")
     channel.setMethodCallHandler(this)
 
-    // Register the platform view factory
     flutterPluginBinding.platformViewRegistry
       .registerViewFactory("leywin/etome/scribble_etome", ScribbleEtomeViewFactory(channel))
   }
