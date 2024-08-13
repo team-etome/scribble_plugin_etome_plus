@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.util.Base64
 import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
@@ -22,6 +23,12 @@ object BitmapManager {
         canvas.drawColor(Color.TRANSPARENT)
         return bitmap
     }
+
+    fun decodeBase64ToBitmap(base64String: String): Bitmap {
+        val decodedString = Base64.decode(base64String, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+    }
+
 
     fun loadBitmapFromPath(filePath: String): Bitmap {
         val file = File(filePath)

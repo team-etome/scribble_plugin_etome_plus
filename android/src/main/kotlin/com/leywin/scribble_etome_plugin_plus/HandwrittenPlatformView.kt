@@ -9,14 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.handwritten.HandwrittenView
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.leywin.scribble_etome_plugin_plus.BitmapManager.saveBitmapFromPath
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import java.io.ByteArrayOutputStream
-
-
-
 
 class HandwrittenViewPlatformView(
     context: Context,
@@ -28,7 +26,6 @@ class HandwrittenViewPlatformView(
     private var savePath: String = "/storage/emulated/0/Notes"
     private var initFlag: Boolean = false
 
-    private val textManipulator: TextManipulator
     private val imageManipulator: ImageManipulator
 
     init {
@@ -39,10 +36,7 @@ class HandwrittenViewPlatformView(
 
         val handwrittenParent = layout.findViewById<RelativeLayout>(R.id.handwrittenParent)
 
-
-
-        textManipulator = TextManipulator(handwrittenParent,handwrittenView)
-        imageManipulator = ImageManipulator(handwrittenParent,handwrittenView)
+        imageManipulator = ImageManipulator(handwrittenParent)
 
         savePath = creationParams?.get("saveFolderPath") as? String ?: savePath
 
@@ -125,28 +119,28 @@ class HandwrittenViewPlatformView(
                     val penWidth = call.argument<Int>("strokeWidth")
                     setStrokeWidth(penWidth ?: 0)
                 }
-                // New text manipulation methods
-                "text.addText" -> {
-                    val text = call.argument<String>("text")
-                    textManipulator.addText(text)
+                "clipImage" -> {
+                    val top = call.argument<Double>("top") ?: 0.0
+                    val left = call.argument<Double>("left") ?: 0.0
+                    val density = call.argument<Double>("density") ?: 0.0
+                    val base64String = call.argument<String>("base64String")
+                    clipImage(top, left, base64String, density)
                 }
-                "text.increaseSize" -> textManipulator.increaseSize()
-                "text.decreaseSize" -> textManipulator.decreaseSize()
-                "text.rotateRight" -> textManipulator.rotateRight()
-                "text.rotateLeft" -> textManipulator.rotateLeft()
-                "text.doneText" -> textManipulator.doneText()
-                "text.cancelText" -> textManipulator.cancelText()
 
                 // New image manipulation methods
                 "image.addImage" -> {
                     val base64string = call.argument<String>("base64String")
                     imageManipulator.addImage(base64string)
                 }
+                "image.moveImage" -> {
+                    val offsetX = call.argument<Double>("offsetX") ?: 0f
+                    val offsetY = call.argument<Double>("offsetY") ?: 0f
+                    imageManipulator.moveImage(offsetX.toFloat(), offsetY.toFloat())
+                }
                 "image.increaseSize" -> imageManipulator.increaseSize()
                 "image.decreaseSize" -> imageManipulator.decreaseSize()
                 "image.rotateRight" -> imageManipulator.rotateRight()
                 "image.rotateLeft" -> imageManipulator.rotateLeft()
-                "image.doneImage" -> imageManipulator.doneImage()
                 "image.cancelImage" -> imageManipulator.cancelImage()
 
                 "getStrokeWidth" -> getStrokeWidth(result)
@@ -174,6 +168,35 @@ class HandwrittenViewPlatformView(
             }
         }
     }
+
+    private fun clipImage(top: Double, left: Double, base64String: String?, density: Double) {
+        if (base64String != null) {
+            val bitmap = BitmapManager.decodeBase64ToBitmap(base64String)
+
+            val imageView = ImageView(layout.context)
+            imageView.setImageBitmap(bitmap)
+
+            val displayMetrics = layout.context.resources.displayMetrics
+            val densityRatio = displayMetrics.density
+
+            val adjustedLeft = (left * densityRatio / density).toInt()
+            val adjustedTop = (top * densityRatio / density).toInt()
+
+            val params = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.leftMargin = adjustedLeft
+            params.topMargin = adjustedTop
+
+            val parentLayout = layout.findViewById<RelativeLayout>(R.id.handwrittenParent)
+            parentLayout.addView(imageView, params)
+        }
+    }
+
+
+
+
 
     private fun clear() {
         Log.d("CanvasFunction", "clear button")

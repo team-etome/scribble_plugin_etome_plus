@@ -181,22 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   icon: const Icon(Icons.remove),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    String? imageBase64 =
-                        await pickImageAndConvertToBase64(context);
-                    if (imageBase64 != null) {
-                      CanvasController.addImage(imageBase64);
-                    }
-                  },
-                  icon: const Icon(Icons.abc_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    CanvasController.doneImage();
-                  },
-                  icon: const Icon(Icons.done),
-                ),
+               
+               
                 // IconButton(
                 //   onPressed: () async {
                 //     CanvasController.refreshCurrentView();

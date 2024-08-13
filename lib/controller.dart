@@ -236,7 +236,8 @@ class CanvasController {
   /// Method to get the current drawing bitmap.
   static Future<Uint8List> getWholeBitmap() async {
     try {
-      final List<dynamic> result = await platform.invokeMethod('getWholeBitmap');
+      final List<dynamic> result =
+          await platform.invokeMethod('getWholeBitmap');
       return Uint8List.fromList(List<int>.from(result));
     } catch (e) {
       log("Error invoking getWholeBitmap method: $e");
@@ -326,15 +327,6 @@ class CanvasController {
     }
   }
 
-  /// Method to set addText.
-  static Future<void> addText(String text) async {
-    try {
-      await platform.invokeMethod('text.addText', {'text': text});
-    } catch (e) {
-      log("Error invoking addText method: $e");
-    }
-  }
-
   /// Method to finish adding text and save it to the canvas.
   static Future<void> doneText() async {
     try {
@@ -392,18 +384,34 @@ class CanvasController {
   /// Method to add an image.
   static Future<void> addImage(String base64String) async {
     try {
-      await platform.invokeMethod('image.addImage', {'base64String': base64String});
+      await platform
+          .invokeMethod('image.addImage', {'base64String': base64String});
     } catch (e) {
       log("Error invoking addImage method: $e");
     }
   }
 
-  /// Method to finish adding the image and save it to the canvas.
-  static Future<void> doneImage() async {
+  /// Method to clip a specific image to the canvas.
+  static Future<void> clipImage(
+      double top, double left, String base64String, double density) async {
     try {
-      await platform.invokeMethod('image.doneImage');
+      await platform.invokeMethod('clipImage', {
+        'base64String': base64String,
+        'top': top,
+        'left': left,
+        'density': density,
+      });
     } catch (e) {
       log("Error invoking doneImage method: $e");
+    }
+  }
+
+   /// Method to finish move image.
+  static Future<void> moveImage(double offsetX, double offsetY) async {
+    try {
+      await platform.invokeMethod('image.moveImage', {"offsetX": offsetX, "offsetY": offsetY});
+    } catch (e) {
+      log("Error invoking moveImage method: $e");
     }
   }
 
