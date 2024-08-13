@@ -1,25 +1,17 @@
 package com.leywin.scribble_etome_plugin_plus
 
-import android.app.Activity
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Rect
-import android.os.Handler
-import android.os.Looper
 import android.util.Base64
-import android.util.Log
 import android.view.MotionEvent
-import android.view.PixelCopy
 import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.handwritten.HandwrittenView
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import kotlin.math.max
 import kotlin.math.min
 
-class ImageManipulator(private val parentLayout: RelativeLayout, private val handwrittenView: HandwrittenView) {
+class ImageManipulator(private val parentLayout: RelativeLayout) {
     private var imageView: ImageView? = null
     private var initialTouchX = 0f
     private var initialTouchY = 0f
@@ -123,44 +115,18 @@ class ImageManipulator(private val parentLayout: RelativeLayout, private val han
         }
     }
 
-    fun doneImage() {
-        imageView?.let {
-            val bitmap = Bitmap.createBitmap(
-                parentLayout.width,
-                parentLayout.height,
-                Bitmap.Config.ARGB_8888
-            )
-
-            val location = IntArray(2)
-            parentLayout.getLocationOnScreen(location)
-
-            PixelCopy.request(
-                (parentLayout.context as Activity).window,
-                Rect(location[0], location[1], location[0] + parentLayout.width, location[1] + parentLayout.height),
-                bitmap,
-                { copyResult ->
-                    if (copyResult == PixelCopy.SUCCESS) {
-                        val layers = handwrittenView.layer.toMutableList()
-                        layers.add(bitmap)
-                        handwrittenView.layer = layers
-
-                        parentLayout.removeView(it)
-                        imageView = null
-                    } else {
-                        // Handle the error case
-                        Log.e("PixelCopy", "Failed to copy pixels: $copyResult")
-                    }
-                },
-                Handler(Looper.getMainLooper())
-            )
-        }
-    }
-
 
     fun cancelImage() {
         imageView?.let {
             parentLayout.removeView(it)
             imageView = null
+        }
+    }
+
+    fun moveImage(offsetX: Float, offsetY: Float) {
+        imageView?.let {
+            it.x += offsetX
+            it.y += offsetY
         }
     }
 }
