@@ -382,10 +382,11 @@ class CanvasController {
   }
 
   /// Method to add an image.
-  static Future<void> addImage(String base64String) async {
+  static Future<void> addImage(String base64String, {double? top}) async {
+    double? top;
     try {
-      await platform
-          .invokeMethod('image.addImage', {'base64String': base64String});
+      await platform.invokeMethod(
+          'image.addImage', {'base64String': base64String, "top": top});
     } catch (e) {
       log("Error invoking addImage method: $e");
     }
@@ -406,10 +407,11 @@ class CanvasController {
     }
   }
 
-   /// Method to finish move image.
+  /// Method to finish move image.
   static Future<void> moveImage(double offsetX, double offsetY) async {
     try {
-      await platform.invokeMethod('image.moveImage', {"offsetX": offsetX, "offsetY": offsetY});
+      await platform.invokeMethod(
+          'image.moveImage', {"offsetX": offsetX, "offsetY": offsetY});
     } catch (e) {
       log("Error invoking moveImage method: $e");
     }

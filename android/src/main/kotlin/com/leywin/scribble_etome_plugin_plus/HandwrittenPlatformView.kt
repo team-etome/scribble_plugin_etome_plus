@@ -130,7 +130,8 @@ class HandwrittenViewPlatformView(
                 // New image manipulation methods
                 "image.addImage" -> {
                     val base64string = call.argument<String>("base64String")
-                    imageManipulator.addImage(base64string)
+                    val top = call.argument<Double>("top")
+                    imageManipulator.addImage(base64string, top)
                 }
                 "image.moveImage" -> {
                     val offsetX = call.argument<Double>("offsetX") ?: 0f
