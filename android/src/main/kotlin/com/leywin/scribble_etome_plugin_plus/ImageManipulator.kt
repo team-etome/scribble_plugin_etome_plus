@@ -24,7 +24,7 @@ class ImageManipulator(private val parentLayout: RelativeLayout) {
         scaleGestureDetector = ScaleGestureDetector(parentLayout.context, ScaleListener())
     }
 
-    fun addImage(base64String: String?) {
+    fun addImage(base64String: String?, top: Double?) {
         if (base64String != null) {
             val decodedString = Base64.decode(base64String, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
@@ -42,11 +42,20 @@ class ImageManipulator(private val parentLayout: RelativeLayout) {
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
                 )
-                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+
+                // Set the top margin if 'top' is provided, else center in parent
+                if (top != null) {
+                    params.topMargin = top.toInt()
+                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+                } else {
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+                }
+
                 parentLayout.addView(this, params)
             }
         }
     }
+
 
     private fun handleTouch(view: View, event: MotionEvent): Boolean {
         when (event.action) {
