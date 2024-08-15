@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     String? base64String =
                         await pickImageAndConvertToBase64(context);
                     if (base64String != null) {
-                      CanvasController.addImage(base64String, top: 0);
+                      CanvasController.addImage(base64String, top: true);
                     }
                   },
                   icon: const Icon(
