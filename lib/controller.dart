@@ -383,7 +383,6 @@ class CanvasController {
 
   /// Method to add an image.
   static Future<void> addImage(String base64String, {double? top}) async {
-    double? top;
     try {
       await platform.invokeMethod(
           'image.addImage', {'base64String': base64String, "top": top});

@@ -181,23 +181,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   icon: const Icon(Icons.remove),
                 ),
-               
-               
+
                 // IconButton(
                 //   onPressed: () async {
                 //     CanvasController.refreshCurrentView();
                 //   },
                 //   icon: const Icon(Icons.abc_outlined),
                 // ),
-                // IconButton(
-                //   onPressed: () {
-                //     _showAlertDialog(context);
-                //   },
-                //   icon: const Icon(
-                //     Icons.warning_amber_outlined,
-                //     color: Colors.red,
-                //   ),
-                // ),
+                IconButton(
+                  onPressed: () async {
+                    String? base64String =
+                        await pickImageAndConvertToBase64(context);
+                    if (base64String != null) {
+                      CanvasController.addImage(base64String, top: 0);
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.red,
+                  ),
+                ),
                 IconButton(
                   onPressed: () async {
                     try {

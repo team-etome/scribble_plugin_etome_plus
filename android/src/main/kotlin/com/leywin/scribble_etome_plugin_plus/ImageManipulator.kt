@@ -3,6 +3,7 @@ package com.leywin.scribble_etome_plugin_plus
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Base64
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
@@ -43,7 +44,6 @@ class ImageManipulator(private val parentLayout: RelativeLayout) {
                     RelativeLayout.LayoutParams.WRAP_CONTENT
                 )
 
-                // Set the top margin if 'top' is provided, else center in parent
                 if (top != null) {
                     params.topMargin = top.toInt()
                     params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
