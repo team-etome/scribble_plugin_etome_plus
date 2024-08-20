@@ -89,26 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Alert Dialog Test'),
-          content: const Text('This is a test alert dialog.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Container buildContainer() {
     return Container(
       decoration: const BoxDecoration(
