@@ -11,7 +11,6 @@ class CanvasEtome extends StatelessWidget {
     required this.saveFolder,
     this.drawingTool = DrawingTool.ballPointPen,
     this.penWidthValue = 3,
-    this.isHandwriting = true,
     this.bottomSpaceHeight,
     this.leftSideWidth,
     this.rightSideWidth,
@@ -25,7 +24,6 @@ class CanvasEtome extends StatelessWidget {
   final String saveFolder;
   final DrawingTool drawingTool;
   final int penWidthValue;
-  final bool isHandwriting;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,6 @@ class CanvasEtome extends StatelessWidget {
       "saveFolderPath": saveFolderPath,
       "drawingToolIndex": drawingTool.index,
       "penWidthValue": penWidthValue,
-      "isHandwriting": isHandwriting,
       "bottomSpaceHeight": bottomSpaceHeight,
       "leftSideWidth": leftSideWidth,
       "rightSideWidth": rightSideWidth,
