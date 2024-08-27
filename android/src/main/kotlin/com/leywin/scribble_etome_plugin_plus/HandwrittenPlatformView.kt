@@ -31,7 +31,8 @@ class HandwrittenViewPlatformView(
     init {
         val parentViewGroup = (context as? Activity)?.findViewById<ViewGroup>(android.R.id.content)
 
-        layout = LayoutInflater.from(context).inflate(R.layout.activity_main, parentViewGroup, false)
+        layout =
+            LayoutInflater.from(context).inflate(R.layout.activity_main, parentViewGroup, false)
         handwrittenView = layout.findViewById(R.id.handwrittenView)
 
         val handwrittenParent = layout.findViewById<RelativeLayout>(R.id.handwrittenParent)
@@ -66,7 +67,8 @@ class HandwrittenViewPlatformView(
     }
 
     private fun setupHandwrittenView(creationParams: Map<*, *>) {
-        val drawingToolIndex = creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
+        val drawingToolIndex =
+            creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
         handwrittenView.drawMode = drawingToolIndex
 
         val layers = mutableListOf<Bitmap?>()
@@ -93,7 +95,8 @@ class HandwrittenViewPlatformView(
 
     private fun adjustHandwrittenViewHeight(topSpaceHeightDp: Int, density: Float) {
         // Calculate the new height
-        val newHeightPx = layout.resources.displayMetrics.heightPixels - (topSpaceHeightDp * density).toInt()
+        val newHeightPx =
+            layout.resources.displayMetrics.heightPixels - (topSpaceHeightDp * density).toInt()
         val layoutParams = handwrittenView.layoutParams as RelativeLayout.LayoutParams
         layoutParams.height = newHeightPx
         handwrittenView.layoutParams = layoutParams
@@ -109,14 +112,17 @@ class HandwrittenViewPlatformView(
                     val imageName = call.argument<String>("imageName")
                     load(result, imageName!!)
                 }
+
                 "save" -> {
                     val imageName = call.argument<String>("imageName")
                     save(result, imageName!!)
                 }
+
                 "setStrokeWidth" -> {
                     val penWidth = call.argument<Int>("strokeWidth")
                     setStrokeWidth(penWidth ?: 0)
                 }
+
                 "clipImage" -> {
                     val top = call.argument<Double>("top") ?: 0.0
                     val left = call.argument<Double>("left") ?: 0.0
@@ -131,11 +137,13 @@ class HandwrittenViewPlatformView(
                     val top = call.argument<Boolean>("top")
                     imageManipulator.addImage(base64string, top)
                 }
+
                 "image.moveImage" -> {
                     val offsetX = call.argument<Double>("offsetX") ?: 0f
                     val offsetY = call.argument<Double>("offsetY") ?: 0f
                     imageManipulator.moveImage(offsetX.toFloat(), offsetY.toFloat())
                 }
+
                 "image.increaseSize" -> imageManipulator.increaseSize()
                 "image.decreaseSize" -> imageManipulator.decreaseSize()
                 "image.rotateRight" -> imageManipulator.rotateRight()
@@ -155,17 +163,29 @@ class HandwrittenViewPlatformView(
                     val strokeType = call.argument<Int>("strokeType")
                     setDrawMode(strokeType ?: 0)
                 }
+
                 "onWindowFocusChanged" -> {
                     val isOverlay = call.argument<Boolean>("onWindowFocusChanged")
                     onWindowFocusChanged(isOverlay ?: true)
                 }
+
                 "isHandwriting" -> {
                     val isHandwriting = call.argument<Boolean>("isHandwriting")
                     isHandwriting(isHandwriting ?: true)
                 }
+
+                "setHightlightOpacity" -> {
+                    val opacity = call.argument<Int>("opacity")
+                    setHightlightOpacity(opacity!!)
+                }
+
                 else -> result.notImplemented()
             }
         }
+    }
+
+    private fun setHightlightOpacity(opacity: Int) {
+        handwrittenView.grayscale = opacity
     }
 
     private fun clipImage(top: Double, left: Double, base64String: String?, density: Double) {
@@ -192,9 +212,6 @@ class HandwrittenViewPlatformView(
             parentLayout.addView(imageView, params)
         }
     }
-
-
-
 
 
     private fun clear() {

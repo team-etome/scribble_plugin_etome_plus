@@ -460,4 +460,13 @@ class CanvasController {
       log("Error invoking rotateImageLeft method: $e");
     }
   }
+
+  /// Method to change opacity of highlighter.
+  static Future<void> setHightlightOpacity(int opacity) async {
+    try {
+      await platform.invokeMethod('setHightlightOpacity', {'opacity': opacity});
+    } catch (e) {
+      log("Error invoking rotateImageLeft method: $e");
+    }
+  }
 }
