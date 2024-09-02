@@ -4,17 +4,17 @@ import 'package:scribble_etome_plugin_plus/controller.dart';
 
 ///Main canvas, call it on a full sized page(or almost full sized page)
 class CanvasEtome extends StatelessWidget {
-  const CanvasEtome({
-    super.key,
-    this.topSpaceHeight,
-    this.imageName,
-    required this.saveFolder,
-    this.drawingTool = DrawingTool.ballPointPen,
-    this.penWidthValue = 3,
-    this.bottomSpaceHeight,
-    this.leftSideWidth,
-    this.rightSideWidth,this.isHandwriting = true
-  });
+  const CanvasEtome(
+      {super.key,
+      this.topSpaceHeight,
+      this.imageName,
+      required this.saveFolder,
+      this.drawingTool = DrawingTool.ballPointPen,
+      this.penWidthValue = 3,
+      this.bottomSpaceHeight,
+      this.leftSideWidth,
+      this.rightSideWidth,
+      this.isHandwriting = true});
 
   final int? topSpaceHeight;
   final int? bottomSpaceHeight;
@@ -24,7 +24,7 @@ class CanvasEtome extends StatelessWidget {
   final String saveFolder;
   final DrawingTool drawingTool;
   final int penWidthValue;
-  final bool isHandwriting ;
+  final bool isHandwriting;
 
   @override
   Widget build(BuildContext context) {
