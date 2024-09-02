@@ -69,7 +69,10 @@ class HandwrittenViewPlatformView(
     private fun setupHandwrittenView(creationParams: Map<*, *>) {
         val drawingToolIndex =
             creationParams["drawingToolIndex"] as? Int ?: HandwrittenView.DRAW_MODE_BALLPEN
+        val isHandwriting =
+            creationParams["isHandwriting"] as? Boolean ?: true
         handwrittenView.drawMode = drawingToolIndex
+        handwrittenView.enableHandwritten(isHandwriting)
 
         val layers = mutableListOf<Bitmap?>()
         layers.add(BitmapManager.createBlankBitmap())

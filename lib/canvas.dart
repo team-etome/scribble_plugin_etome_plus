@@ -13,7 +13,7 @@ class CanvasEtome extends StatelessWidget {
     this.penWidthValue = 3,
     this.bottomSpaceHeight,
     this.leftSideWidth,
-    this.rightSideWidth,
+    this.rightSideWidth,this.isHandwriting = true
   });
 
   final int? topSpaceHeight;
@@ -24,6 +24,7 @@ class CanvasEtome extends StatelessWidget {
   final String saveFolder;
   final DrawingTool drawingTool;
   final int penWidthValue;
+  final bool isHandwriting ;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class CanvasEtome extends StatelessWidget {
       "bottomSpaceHeight": bottomSpaceHeight,
       "leftSideWidth": leftSideWidth,
       "rightSideWidth": rightSideWidth,
+      "isHandwriting": isHandwriting,
     };
 
     return AndroidView(
