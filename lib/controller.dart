@@ -51,10 +51,14 @@ class CanvasController {
     }
   }
 
-  /// Method to load a drawing from a image.
-  static Future<void> load(String imageName) async {
+  /// Method to load a drawing from a image. [imagePath] is imagePath after the folder name
+  /// & [duration] is an optional parameter for any needed delay
+  static Future<void> load(String imagePath, [Duration? duration]) async {
     try {
-      await platform.invokeMethod('load', {'imageName': imageName});
+      if (duration != null) {
+        await Future.delayed(duration);
+      }
+      await platform.invokeMethod('load', {'imageName': imagePath});
     } catch (e) {
       log("Error invoking load method: $e");
     }
