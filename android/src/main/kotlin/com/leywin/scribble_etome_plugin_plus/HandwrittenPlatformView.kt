@@ -348,7 +348,7 @@ class HandwrittenViewPlatformView(
 
     private fun load(result: MethodChannel.Result, imageName: String) {
         val filePath = "$savePath${imageName}.png"
-        clear()
+//        clear()
         val bitMap: Bitmap = BitmapManager.loadBitmapFromPath(filePath)
         val layers = mutableListOf<Bitmap?>()
         layers.add(bitMap)
